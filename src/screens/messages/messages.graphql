@@ -1,0 +1,25 @@
+query Messages (
+  $where: MessageWhereInput,
+  $orderBy: [MessageOrderByWithRelationInput!]
+) {
+  messages(where: $where, take:10, orderBy:$orderBy) {
+    id
+    content
+    author {
+      id
+      name
+      images {
+        path
+      }
+    }
+    createdAt
+  }
+}
+
+query MeId {
+  me {
+    id
+  }
+}
+
+

@@ -1,0 +1,18 @@
+query Conversations {
+  me {
+    id
+    conversations {
+      id
+      members {
+        id
+        name
+        images {
+          path
+        }
+      }
+      lastMessageContent
+      lastMessageAuthor
+      lastMessageDate
+    }
+  }
+}

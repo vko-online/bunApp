@@ -1,0 +1,10 @@
+mutation signIn ($input: AuthInput!) {
+  signIn (input: $input) {
+    token
+    user {
+      id
+      name
+      phone
+    }
+  }
+}
