@@ -30,8 +30,9 @@ import {
   RootTabScreenProps
 } from '../types'
 import LinkingConfiguration from './LinkingConfiguration'
-import { useMeQuery } from 'src/generated/graphql'
-import { ActivityIndicator } from 'react-native-paper'
+import { RootState } from 'src/store'
+import { useSelector } from 'react-redux'
+import isEmpty from 'lodash/isEmpty'
 
 export default function Navigation ({
   colorScheme
@@ -76,17 +77,15 @@ const ConversationNavigator = (): JSX.Element => {
 
 function RootNavigator (): JSX.Element | null {
   const colorScheme = useColorScheme()
-  const { data, loading } = useMeQuery()
-
-  if (loading) return <ActivityIndicator />
+  const auth = useSelector((state: RootState) => state.auth)
 
   let initialRoute: keyof RootStackParamList = 'Root'
 
-  if (data?.me?.name == null) {
+  if (isEmpty(auth.name)) {
     initialRoute = 'Onboarding'
   }
 
-  if (data?.me == null) {
+  if (auth.token == null) {
     initialRoute = 'Auth'
   }
 

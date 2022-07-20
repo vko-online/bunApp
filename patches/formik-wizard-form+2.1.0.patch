@@ -1,0 +1,21 @@
+diff --git a/node_modules/formik-wizard-form/dist/types.d.ts b/node_modules/formik-wizard-form/dist/types.d.ts
+index 20eacf2..6ed8be9 100644
+--- a/node_modules/formik-wizard-form/dist/types.d.ts
++++ b/node_modules/formik-wizard-form/dist/types.d.ts
+@@ -1,6 +1,6 @@
+ /// <reference types="react" />
+ import { FormikConfig, FormikProps, FormikValues } from 'formik';
+-export declare type Step = {
++export declare type Step<T extends FormikValues> = {
+     /** Validation schema object for the current step */
+     validationSchema?: any | (() => any);
+     /** Handler to be called before moving to previous step */
+@@ -8,7 +8,7 @@ export declare type Step = {
+     /** Handler to be called before moving to next step */
+     beforeNext?: (values: FormikValues, formikBag: FormikProps<FormikValues>, currentStepIndex: number) => Promise<any>;
+     /** React functional or class component */
+-    component: React.ComponentType<FormikProps<FormikValues> & {
++    component: React.ComponentType<FormikProps<T> & {
+         currentStepIndex: number;
+     }>;
+ };

@@ -1,41 +1,28 @@
 import React from 'react'
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Surface, Title, Caption } from 'react-native-paper'
 import { useHeaderHeight } from '@react-navigation/elements'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 import Layout from 'src/constants/Layout'
 import { BlurView } from 'expo-blur'
 import Online from 'src/components/Online'
-import { Profile } from 'src/store/model'
-import { useImagesQuery } from 'src/store/api'
-import Carousel from 'react-native-snap-carousel'
 
 const PADDING = 20
 
 interface Props {
-  data: Profile
+  // data: Profile
   onPress?: () => void
 }
-export default function ProfileCard ({ data, onPress }: Props): JSX.Element {
+export default function ProfileCard ({onPress }: Props): JSX.Element {
   const headerHeight = useHeaderHeight()
   const bottomHeight = useBottomTabBarHeight()
-  const { data: images } = useImagesQuery(data.id)
+  // const { data: images } = useImagesQuery(data.id)
 
   const height = Layout.window.height - headerHeight - bottomHeight - PADDING * 2
   const width = Layout.window.width - PADDING * 2
-  console.log('images', images)
   return (
     <TouchableOpacity onPress={onPress} disabled activeOpacity={0.8}>
       <Surface style={[s.container, { width, height }]}>
-        <Carousel
-          layout='default'
-          data={images ?? []}
-          loop
-          sliderWidth={width}
-          itemWidth={width}
-          activeSlideAlignment='center'
-          renderItem={({ item }) => <Image style={s.image} source={{ uri: item }} />}
-        />
         <View style={s.bottomBar}>
           <BlurView intensity={25} style={s.row}>
             <Online isOnline={data.online} />

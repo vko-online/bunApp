@@ -8,11 +8,12 @@ export interface Item {
 }
 interface Props {
   label: string
+  placeholder?: string
   data: Item[]
   value: string
   onChange: (d: string) => void
 }
-export default function Dropdown ({ value, label, data, onChange }: Props): JSX.Element {
+export default function Dropdown ({ value, label, placeholder, data, onChange }: Props): JSX.Element {
   const [visible, setVisible] = useState(false)
   const [val, setVal] = useState(value)
   const ref = useRef<RNTextInput>(null)
@@ -36,7 +37,7 @@ export default function Dropdown ({ value, label, data, onChange }: Props): JSX.
           value={val}
           ref={ref}
           onFocus={openMenu}
-          placeholder='Enter your real name'
+          placeholder={placeholder}
         />
         }
     >

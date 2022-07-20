@@ -9,6 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AUTH_STORAGE_KEY } from 'src/constants/Auth'
 import { RootStackScreenProps } from 'src/types'
 import { Spacer } from 'src/components/Separator'
+import { useDispatch } from 'react-redux'
+import { onAuthSuccess } from 'src/store/slices/auth'
 
 const schema = yup.object().shape({
   password: yup.string().required(),
@@ -18,6 +20,7 @@ const schema = yup.object().shape({
 export default function Auth ({
   navigation
 }: RootStackScreenProps<'Auth'>): JSX.Element {
+  const dispatch = useDispatch()
   const [handleSignIn, { loading }] = useSignInMutation()
   return (
     <Formik
@@ -27,7 +30,6 @@ export default function Auth ({
       }}
       validateOnMount
       onSubmit={async (values, actions) => {
-        console.log('values', values)
         const { data } = await handleSignIn({
           variables: {
             input: values
@@ -38,7 +40,13 @@ export default function Auth ({
             AUTH_STORAGE_KEY,
             data.signIn.token
           )
+          dispatch(onAuthSuccess({
+            currentUserId: data.signIn.user.id,
+            token: data.signIn.token,
+            name: data.signIn.user.name ?? ''
+          }))
           navigation.navigate('Root')
+          actions.resetForm()
         }
       }}
       validationSchema={schema}
