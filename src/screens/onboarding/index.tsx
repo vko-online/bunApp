@@ -9,6 +9,8 @@ import Permissions, { permissionsSchema } from './steps/Permissions'
 import Preferences, { preferencesSchema } from './steps/Preferences'
 import UploadImages, { uploadImagesSchema } from './steps/UploadImages'
 import Row from 'src/components/Row'
+import { persistor } from 'src/store'
+import { client } from 'src/services/client'
 
 // todo: overall onboarding should be redesigned
 // as for now it's hard to do any reasonable changes in UI
@@ -58,6 +60,12 @@ export default function Onboarding ({ navigation }: RootStackScreenProps<'Onboar
     ]
   })
 
+  async function handleLogout (): Promise<void> {
+    await persistor.purge()
+    await client.resetStore()
+    navigation.replace('Auth')
+  }
+
   return (
     <View style={s.container}>
       {renderComponent()}
@@ -71,6 +79,7 @@ export default function Onboarding ({ navigation }: RootStackScreenProps<'Onboar
         </Button>
       </Row>
       <Spacer />
+      <Button mode='text' onPress={handleLogout}>Sign out</Button>
     </View>
   )
 }

@@ -24,7 +24,6 @@ import ProfileScreen from 'src/screens/profile'
 import {
   RootStackParamList,
   DiscoverStackParamList,
-  ConversationStackParamList,
   RootStackScreenProps,
   RootTabParamList,
   RootTabScreenProps
@@ -49,13 +48,8 @@ export default function Navigation ({
   )
 }
 
-/**
- * A root stack navigator is often used for displaying modals on top of all other content.
- * https://reactnavigation.org/docs/modal
- */
 const Stack = createNativeStackNavigator<RootStackParamList>()
 const DiscoverStack = createNativeStackNavigator<DiscoverStackParamList>()
-const ConversationStack = createNativeStackNavigator<ConversationStackParamList>()
 
 const DiscoverNavigator = (): JSX.Element => (
   <DiscoverStack.Navigator initialRouteName='Discover' screenOptions={{ headerShown: false }}>
@@ -63,17 +57,6 @@ const DiscoverNavigator = (): JSX.Element => (
     <DiscoverStack.Screen name='Overview' component={OverviewScreen} />
   </DiscoverStack.Navigator>
 )
-
-const ConversationNavigator = (): JSX.Element => {
-  return (
-    <ConversationStack.Navigator initialRouteName='Conversations'>
-      <ConversationStack.Screen name='Conversations' component={ConversationsScreen} />
-      <ConversationStack.Screen
-        name='Messages' component={MessagesScreen}
-      />
-    </ConversationStack.Navigator>
-  )
-}
 
 function RootNavigator (): JSX.Element | null {
   const colorScheme = useColorScheme()
@@ -99,6 +82,13 @@ function RootNavigator (): JSX.Element | null {
       <Stack.Screen
         name='Auth'
         component={AuthScreen}
+      />
+      <Stack.Screen
+        name='Messages'
+        component={MessagesScreen}
+        options={(navigation) => ({
+          title: navigation.route.params.title as string
+        })}
       />
       <Stack.Screen
         name='Onboarding'
@@ -179,11 +169,11 @@ function BottomTabNavigator (): JSX.Element {
       }}
     >
       <BottomTab.Screen
-        name='ConversationsTab'
-        component={ConversationNavigator}
-        options={({ navigation }: RootTabScreenProps<'ConversationsTab'>) => ({
+        name='Conversations'
+        component={ConversationsScreen}
+        options={({ navigation }: RootTabScreenProps<'Conversations'>) => ({
           title: 'Conversations',
-          headerShown: false,
+          headerShown: true,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               name={focused ? 'ios-chatbox' : 'ios-chatbox-outline'}

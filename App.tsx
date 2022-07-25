@@ -9,6 +9,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 
 import useCachedResources from 'src/hooks/useCachedResources'
 import useColorScheme from 'src/hooks/useColorScheme'
+import Messaging from 'src/features/messaging'
 import Navigation from 'src/navigation'
 import React from 'react'
 import { store, persistor } from 'src/store'
@@ -31,6 +32,7 @@ export default function App (): JSX.Element | null {
               <Provider store={store}>
                 <Navigation colorScheme={colorScheme} />
                 <StatusBar />
+                <Messaging />
               </Provider>
             </PersistGate>
           </ApolloProvider>

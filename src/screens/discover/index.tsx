@@ -1,11 +1,7 @@
-import { FlatList, StyleSheet } from 'react-native'
-import { ActivityIndicator } from 'react-native-paper'
+import { StyleSheet } from 'react-native'
 import { View } from 'src/components/Themed'
-import ProfileCard from 'src/components/ProfileCard'
-import { useState, useEffect } from 'react'
-import { useLazySearchQuery, useProfileQuery } from 'src/store/api'
 
-export default function TabTwoScreen (): JSX.Element {
+export default function DiscoverScreen (): JSX.Element {
   return (
     <View style={s.container}>
       {/* <FlatList

@@ -1,0 +1,5 @@
+mutation SendMessage ($input: ConversationInput!) {
+  sendMessage (input: $input) {
+    ...MessageParts
+  }
+}

@@ -3,20 +3,16 @@ import { setContext } from '@apollo/client/link/context'
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { createClient } from 'graphql-ws'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { AUTH_STORAGE_KEY } from 'src/constants/Auth'
 import { onError } from '@apollo/client/link/error'
+import { store } from 'src/store'
 
 const wsLink = new GraphQLWsLink(createClient({
   url: 'ws://localhost:3001/graphql',
-  connectionParams: async () => {
-    const token = await AsyncStorage.getItem(AUTH_STORAGE_KEY)
+  lazy: true,
+  connectionParams: () => {
+    const token = store.getState().auth.token
     return {
-      headers: {
-        headers: {
-          authorization: token != null ? `Bearer ${token}` : null
-        }
-      }
+      authorization: token != null ? `Bearer ${token}` : null
     }
   }
 }))
@@ -34,8 +30,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 })
 
 const authLink = setContext(async (_, { headers }) => {
-  // get the authentication token from local storage if it exists
-  const token = await AsyncStorage.getItem(AUTH_STORAGE_KEY)
+  const token = store.getState().auth.token
   // return the headers to the context so httpLink can read them
   return {
     headers: {

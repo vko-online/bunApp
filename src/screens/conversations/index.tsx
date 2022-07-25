@@ -1,33 +1,34 @@
 import { StyleSheet, FlatList } from 'react-native'
 
-import EditScreenInfo from 'src/components/EditScreenInfo'
-import { Text, View } from 'src/components/Themed'
-import { Caption, List } from 'react-native-paper'
-import { useConversationsQuery } from 'src/generated/graphql'
+import { View } from 'src/components/Themed'
+import { Caption, List, Avatar } from 'react-native-paper'
+import { useMyConversationsQuery } from 'src/generated/graphql'
 import Helmet from 'src/components/Helmet'
 import { formatDistance } from 'date-fns'
-import { ConversationStackScreenProps } from 'src/types'
+import { RootTabScreenProps } from 'src/types'
+import { useSelector } from 'react-redux'
+import { RootState } from 'src/store'
 
 export default function Conversations ({
   navigation
-}: ConversationStackScreenProps<'Conversations'>): JSX.Element {
-  const { data, loading, error } = useConversationsQuery()
+}: RootTabScreenProps<'Conversations'>): JSX.Element {
+  const userId = useSelector((state: RootState) => state.auth.currentUserId)
+  const { data, loading, error } = useMyConversationsQuery()
 
   return (
     <Helmet loading={loading} error={error}>
       <View style={s.container}>
         <FlatList
-          data={data?.me?.conversations}
+          data={data?.myConversations}
           // contentContainerStyle={{ flex: 1 }}
           renderItem={({ item }) => {
-            const user = item.members.filter(v => v.id !== data?.me?.id)[0]
+            const other = item.members.filter(v => v.id !== userId)[0]
 
-            const left = user.images.length > 0 ? <List.Icon icon={{ uri: user.images[0].path }} /> : null
             return (
               <List.Item
-                left={() => left} title={user.name} description={item.lastMessageContent}
+                left={() => <Avatar.Text label={other.name?.slice(0, 1) ?? other.id.slice(0, 1)} />} title={other.name} description={item.lastMessageContent}
                 right={() => <Caption>{formatDistance(new Date(item.lastMessageDate), new Date())}</Caption>}
-                onPress={() => navigation.navigate('Messages', { conversationId: item.id })}
+                onPress={() => navigation.navigate('Messages', { conversationId: item.id, title: other.name })}
               />
             )
           }}

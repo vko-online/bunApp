@@ -1,0 +1,11 @@
+fragment MessageParts on Message {
+  id
+  content
+  author {
+    id
+    name
+  }
+  createdAt
+  readByIds
+  receivedByIds
+}

@@ -20,17 +20,13 @@ export type RootStackParamList = {
   Modal: undefined
   Auth: undefined
   Onboarding: undefined
+  Messages: {
+    conversationId: string
+    title?: string | null
+  }
   SettingsModal: undefined
   FilterModal: undefined
   NotFound: undefined
-}
-
-// eslint-disable-next-line
-export type ConversationStackParamList = {
-  Conversations: undefined
-  Messages: {
-    conversationId: string
-  }
 }
 
 // eslint-disable-next-line
@@ -42,12 +38,9 @@ export type DiscoverStackParamList = {
 export type RootStackScreenProps<Screen extends keyof RootStackParamList>
   = NativeStackScreenProps<RootStackParamList, Screen>
 
-export type ConversationStackScreenProps<Screen extends keyof ConversationStackParamList>
-  = NativeStackScreenProps<ConversationStackParamList, Screen>
-
 // eslint-disable-next-line
 export type RootTabParamList = {
-  ConversationsTab: NativeStackScreenProps<ConversationStackParamList, keyof ConversationStackParamList>
+  Conversations: undefined
   DiscoverTab: NativeStackScreenProps<DiscoverStackParamList, keyof DiscoverStackParamList>
   Profile: undefined
 }

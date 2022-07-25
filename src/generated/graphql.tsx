@@ -72,6 +72,11 @@ export type AuthPayload = {
   user: User;
 };
 
+export type BatchPayload = {
+  __typename?: 'BatchPayload';
+  count: Scalars['Float'];
+};
+
 export type BoolFieldUpdateOperationsInput = {
   set?: InputMaybe<Scalars['Boolean']>;
 };
@@ -1265,6 +1270,8 @@ export type Message = {
   conversationId: Scalars['String'];
   createdAt: Scalars['DateTime'];
   id: Scalars['String'];
+  readByIds: Array<Scalars['String']>;
+  receivedByIds: Array<Scalars['String']>;
 };
 
 export type MessageCountAggregate = {
@@ -1275,6 +1282,8 @@ export type MessageCountAggregate = {
   conversationId: Scalars['Int'];
   createdAt: Scalars['Int'];
   id: Scalars['Int'];
+  readByIds: Scalars['Int'];
+  receivedByIds: Scalars['Int'];
 };
 
 export type MessageCountOrderByAggregateInput = {
@@ -1283,6 +1292,8 @@ export type MessageCountOrderByAggregateInput = {
   conversationId?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
+  readByIds?: InputMaybe<SortOrder>;
+  receivedByIds?: InputMaybe<SortOrder>;
 };
 
 export type MessageCreateInput = {
@@ -1291,6 +1302,8 @@ export type MessageCreateInput = {
   conversation: ConversationCreateNestedOneWithoutMessagesInput;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
+  readByIds?: InputMaybe<MessageCreatereadByIdsInput>;
+  receivedByIds?: InputMaybe<MessageCreatereceivedByIdsInput>;
 };
 
 export type MessageCreateManyAuthorInput = {
@@ -1298,6 +1311,8 @@ export type MessageCreateManyAuthorInput = {
   conversationId: Scalars['String'];
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
+  readByIds?: InputMaybe<MessageCreatereadByIdsInput>;
+  receivedByIds?: InputMaybe<MessageCreatereceivedByIdsInput>;
 };
 
 export type MessageCreateManyAuthorInputEnvelope = {
@@ -1310,6 +1325,8 @@ export type MessageCreateManyConversationInput = {
   content: Scalars['String'];
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
+  readByIds?: InputMaybe<MessageCreatereadByIdsInput>;
+  receivedByIds?: InputMaybe<MessageCreatereceivedByIdsInput>;
 };
 
 export type MessageCreateManyConversationInputEnvelope = {
@@ -1323,6 +1340,8 @@ export type MessageCreateManyInput = {
   conversationId: Scalars['String'];
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
+  readByIds?: InputMaybe<MessageCreatereadByIdsInput>;
+  receivedByIds?: InputMaybe<MessageCreatereceivedByIdsInput>;
 };
 
 export type MessageCreateNestedManyWithoutAuthorInput = {
@@ -1354,6 +1373,8 @@ export type MessageCreateWithoutAuthorInput = {
   conversation: ConversationCreateNestedOneWithoutMessagesInput;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
+  readByIds?: InputMaybe<MessageCreatereadByIdsInput>;
+  receivedByIds?: InputMaybe<MessageCreatereceivedByIdsInput>;
 };
 
 export type MessageCreateWithoutConversationInput = {
@@ -1361,6 +1382,16 @@ export type MessageCreateWithoutConversationInput = {
   content: Scalars['String'];
   createdAt?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['String']>;
+  readByIds?: InputMaybe<MessageCreatereadByIdsInput>;
+  receivedByIds?: InputMaybe<MessageCreatereceivedByIdsInput>;
+};
+
+export type MessageCreatereadByIdsInput = {
+  set: Array<Scalars['String']>;
+};
+
+export type MessageCreatereceivedByIdsInput = {
+  set: Array<Scalars['String']>;
 };
 
 export type MessageGroupBy = {
@@ -1373,6 +1404,8 @@ export type MessageGroupBy = {
   conversationId: Scalars['String'];
   createdAt: Scalars['DateTime'];
   id: Scalars['String'];
+  readByIds?: Maybe<Array<Scalars['String']>>;
+  receivedByIds?: Maybe<Array<Scalars['String']>>;
 };
 
 export type MessageListRelationFilter = {
@@ -1428,6 +1461,8 @@ export type MessageOrderByWithAggregationInput = {
   conversationId?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
+  readByIds?: InputMaybe<SortOrder>;
+  receivedByIds?: InputMaybe<SortOrder>;
 };
 
 export type MessageOrderByWithRelationInput = {
@@ -1438,6 +1473,8 @@ export type MessageOrderByWithRelationInput = {
   conversationId?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   id?: InputMaybe<SortOrder>;
+  readByIds?: InputMaybe<SortOrder>;
+  receivedByIds?: InputMaybe<SortOrder>;
 };
 
 export enum MessageScalarFieldEnum {
@@ -1445,7 +1482,9 @@ export enum MessageScalarFieldEnum {
   Content = 'content',
   ConversationId = 'conversationId',
   CreatedAt = 'createdAt',
-  Id = 'id'
+  Id = 'id',
+  ReadByIds = 'readByIds',
+  ReceivedByIds = 'receivedByIds'
 }
 
 export type MessageScalarWhereInput = {
@@ -1457,6 +1496,8 @@ export type MessageScalarWhereInput = {
   conversationId?: InputMaybe<StringFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
   id?: InputMaybe<StringFilter>;
+  readByIds?: InputMaybe<StringNullableListFilter>;
+  receivedByIds?: InputMaybe<StringNullableListFilter>;
 };
 
 export type MessageScalarWhereWithAggregatesInput = {
@@ -1468,6 +1509,8 @@ export type MessageScalarWhereWithAggregatesInput = {
   conversationId?: InputMaybe<StringWithAggregatesFilter>;
   createdAt?: InputMaybe<DateTimeWithAggregatesFilter>;
   id?: InputMaybe<StringWithAggregatesFilter>;
+  readByIds?: InputMaybe<StringNullableListFilter>;
+  receivedByIds?: InputMaybe<StringNullableListFilter>;
 };
 
 export type MessageUpdateInput = {
@@ -1476,12 +1519,16 @@ export type MessageUpdateInput = {
   conversation?: InputMaybe<ConversationUpdateOneRequiredWithoutMessagesNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  readByIds?: InputMaybe<MessageUpdatereadByIdsInput>;
+  receivedByIds?: InputMaybe<MessageUpdatereceivedByIdsInput>;
 };
 
 export type MessageUpdateManyMutationInput = {
   content?: InputMaybe<StringFieldUpdateOperationsInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  readByIds?: InputMaybe<MessageUpdatereadByIdsInput>;
+  receivedByIds?: InputMaybe<MessageUpdatereceivedByIdsInput>;
 };
 
 export type MessageUpdateManyWithWhereWithoutAuthorInput = {
@@ -1537,6 +1584,8 @@ export type MessageUpdateWithoutAuthorInput = {
   conversation?: InputMaybe<ConversationUpdateOneRequiredWithoutMessagesNestedInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  readByIds?: InputMaybe<MessageUpdatereadByIdsInput>;
+  receivedByIds?: InputMaybe<MessageUpdatereceivedByIdsInput>;
 };
 
 export type MessageUpdateWithoutConversationInput = {
@@ -1544,6 +1593,18 @@ export type MessageUpdateWithoutConversationInput = {
   content?: InputMaybe<StringFieldUpdateOperationsInput>;
   createdAt?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   id?: InputMaybe<StringFieldUpdateOperationsInput>;
+  readByIds?: InputMaybe<MessageUpdatereadByIdsInput>;
+  receivedByIds?: InputMaybe<MessageUpdatereceivedByIdsInput>;
+};
+
+export type MessageUpdatereadByIdsInput = {
+  push?: InputMaybe<Array<Scalars['String']>>;
+  set?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type MessageUpdatereceivedByIdsInput = {
+  push?: InputMaybe<Array<Scalars['String']>>;
+  set?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type MessageUpsertWithWhereUniqueWithoutAuthorInput = {
@@ -1569,6 +1630,8 @@ export type MessageWhereInput = {
   conversationId?: InputMaybe<StringFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
   id?: InputMaybe<StringFilter>;
+  readByIds?: InputMaybe<StringNullableListFilter>;
+  receivedByIds?: InputMaybe<StringNullableListFilter>;
 };
 
 export type MessageWhereUniqueInput = {
@@ -1605,6 +1668,8 @@ export type Mutation = {
   deleteOneMessage?: Maybe<Message>;
   deleteOneUser?: Maybe<User>;
   interact: Interaction;
+  markAsRead: BatchPayload;
+  markAsReceived: BatchPayload;
   sendMessage: Message;
   signIn: AuthPayload;
   signOut?: Maybe<Scalars['Boolean']>;
@@ -1735,6 +1800,16 @@ export type MutationDeleteOneUserArgs = {
 
 export type MutationInteractArgs = {
   input: InteractionInput;
+};
+
+
+export type MutationMarkAsReadArgs = {
+  messageIds: Array<Scalars['String']>;
+};
+
+
+export type MutationMarkAsReceivedArgs = {
+  messageIds: Array<Scalars['String']>;
 };
 
 
@@ -2173,6 +2248,7 @@ export type Query = {
   me?: Maybe<User>;
   message?: Maybe<Message>;
   messages: Array<Message>;
+  myConversations: Array<Conversation>;
   user?: Maybe<User>;
   users: Array<User>;
 };
@@ -2460,6 +2536,14 @@ export type StringNullableFilter = {
   not?: InputMaybe<NestedStringNullableFilter>;
   notIn?: InputMaybe<Array<Scalars['String']>>;
   startsWith?: InputMaybe<Scalars['String']>;
+};
+
+export type StringNullableListFilter = {
+  equals?: InputMaybe<Array<Scalars['String']>>;
+  has?: InputMaybe<Scalars['String']>;
+  hasEvery?: InputMaybe<Array<Scalars['String']>>;
+  hasSome?: InputMaybe<Array<Scalars['String']>>;
+  isEmpty?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type StringNullableWithAggregatesFilter = {
@@ -3347,6 +3431,22 @@ export type UserWhereUniqueInput = {
   phone?: InputMaybe<Scalars['String']>;
 };
 
+export type MarkAsReceivedMutationVariables = Exact<{
+  messageIds: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type MarkAsReceivedMutation = { __typename?: 'Mutation', markAsReceived: { __typename?: 'BatchPayload', count: number } };
+
+export type NewMessageSubscriptionVariables = Exact<{
+  currentUserId: Scalars['String'];
+}>;
+
+
+export type NewMessageSubscription = { __typename?: 'Subscription', newMessage: { __typename?: 'MessageWithTargetIds', targetId: string, conversationId: string, message: { __typename?: 'Message', id: string, content: string, createdAt: any, readByIds: Array<string>, receivedByIds: Array<string>, author: { __typename?: 'User', id: string, name?: string | null } } } };
+
+export type MessagePartsFragment = { __typename?: 'Message', id: string, content: string, createdAt: any, readByIds: Array<string>, receivedByIds: Array<string>, author: { __typename?: 'User', id: string, name?: string | null } };
+
 export type SignInMutationVariables = Exact<{
   input: AuthInput;
 }>;
@@ -3354,10 +3454,24 @@ export type SignInMutationVariables = Exact<{
 
 export type SignInMutation = { __typename?: 'Mutation', signIn: { __typename?: 'AuthPayload', token: string, user: { __typename?: 'User', id: string, name?: string | null, phone: string } } };
 
-export type ConversationsQueryVariables = Exact<{ [key: string]: never; }>;
+export type MyConversationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ConversationsQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, conversations: Array<{ __typename?: 'Conversation', id: string, lastMessageContent?: string | null, lastMessageAuthor?: string | null, lastMessageDate?: any | null, members: Array<{ __typename?: 'User', id: string, name?: string | null, images: Array<{ __typename?: 'File', path: string }> }> }> } | null };
+export type MyConversationsQuery = { __typename?: 'Query', myConversations: Array<{ __typename?: 'Conversation', id: string, lastMessageContent?: string | null, lastMessageAuthor?: string | null, lastMessageDate?: any | null, members: Array<{ __typename?: 'User', id: string, name?: string | null }> }> };
+
+export type MarkAsReadMutationVariables = Exact<{
+  messageIds: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type MarkAsReadMutation = { __typename?: 'Mutation', markAsRead: { __typename?: 'BatchPayload', count: number } };
+
+export type SendMessageMutationVariables = Exact<{
+  input: ConversationInput;
+}>;
+
+
+export type SendMessageMutation = { __typename?: 'Mutation', sendMessage: { __typename?: 'Message', id: string, content: string, createdAt: any, readByIds: Array<string>, receivedByIds: Array<string>, author: { __typename?: 'User', id: string, name?: string | null } } };
 
 export type MessagesQueryVariables = Exact<{
   where?: InputMaybe<MessageWhereInput>;
@@ -3365,19 +3479,93 @@ export type MessagesQueryVariables = Exact<{
 }>;
 
 
-export type MessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', id: string, content: string, createdAt: any, author: { __typename?: 'User', id: string, name?: string | null, images: Array<{ __typename?: 'File', path: string }> } }> };
-
-export type MeIdQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MeIdQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string } | null };
+export type MessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', id: string, content: string, createdAt: any, readByIds: Array<string>, receivedByIds: Array<string>, author: { __typename?: 'User', id: string, name?: string | null } }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, name?: string | null, phone: string, images: Array<{ __typename?: 'File', path: string }> } | null };
 
+export const MessagePartsFragmentDoc = gql`
+    fragment MessageParts on Message {
+  id
+  content
+  author {
+    id
+    name
+  }
+  createdAt
+  readByIds
+  receivedByIds
+}
+    `;
+export const MarkAsReceivedDocument = gql`
+    mutation markAsReceived($messageIds: [String!]!) {
+  markAsReceived(messageIds: $messageIds) {
+    count
+  }
+}
+    `;
+export type MarkAsReceivedMutationFn = Apollo.MutationFunction<MarkAsReceivedMutation, MarkAsReceivedMutationVariables>;
 
+/**
+ * __useMarkAsReceivedMutation__
+ *
+ * To run a mutation, you first call `useMarkAsReceivedMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMarkAsReceivedMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [markAsReceivedMutation, { data, loading, error }] = useMarkAsReceivedMutation({
+ *   variables: {
+ *      messageIds: // value for 'messageIds'
+ *   },
+ * });
+ */
+export function useMarkAsReceivedMutation(baseOptions?: Apollo.MutationHookOptions<MarkAsReceivedMutation, MarkAsReceivedMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MarkAsReceivedMutation, MarkAsReceivedMutationVariables>(MarkAsReceivedDocument, options);
+      }
+export type MarkAsReceivedMutationHookResult = ReturnType<typeof useMarkAsReceivedMutation>;
+export type MarkAsReceivedMutationResult = Apollo.MutationResult<MarkAsReceivedMutation>;
+export type MarkAsReceivedMutationOptions = Apollo.BaseMutationOptions<MarkAsReceivedMutation, MarkAsReceivedMutationVariables>;
+export const NewMessageDocument = gql`
+    subscription newMessage($currentUserId: String!) {
+  newMessage(currentUserId: $currentUserId) {
+    targetId
+    conversationId
+    message {
+      ...MessageParts
+    }
+  }
+}
+    ${MessagePartsFragmentDoc}`;
+
+/**
+ * __useNewMessageSubscription__
+ *
+ * To run a query within a React component, call `useNewMessageSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNewMessageSubscription({
+ *   variables: {
+ *      currentUserId: // value for 'currentUserId'
+ *   },
+ * });
+ */
+export function useNewMessageSubscription(baseOptions: Apollo.SubscriptionHookOptions<NewMessageSubscription, NewMessageSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<NewMessageSubscription, NewMessageSubscriptionVariables>(NewMessageDocument, options);
+      }
+export type NewMessageSubscriptionHookResult = ReturnType<typeof useNewMessageSubscription>;
+export type NewMessageSubscriptionResult = Apollo.SubscriptionResult<NewMessageSubscription>;
 export const SignInDocument = gql`
     mutation signIn($input: AuthInput!) {
   signIn(input: $input) {
@@ -3416,69 +3604,120 @@ export function useSignInMutation(baseOptions?: Apollo.MutationHookOptions<SignI
 export type SignInMutationHookResult = ReturnType<typeof useSignInMutation>;
 export type SignInMutationResult = Apollo.MutationResult<SignInMutation>;
 export type SignInMutationOptions = Apollo.BaseMutationOptions<SignInMutation, SignInMutationVariables>;
-export const ConversationsDocument = gql`
-    query Conversations {
-  me {
+export const MyConversationsDocument = gql`
+    query MyConversations {
+  myConversations {
     id
-    conversations {
+    members {
       id
-      members {
-        id
-        name
-        images {
-          path
-        }
-      }
-      lastMessageContent
-      lastMessageAuthor
-      lastMessageDate
+      name
     }
+    lastMessageContent
+    lastMessageAuthor
+    lastMessageDate
   }
 }
     `;
 
 /**
- * __useConversationsQuery__
+ * __useMyConversationsQuery__
  *
- * To run a query within a React component, call `useConversationsQuery` and pass it any options that fit your needs.
- * When your component renders, `useConversationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useMyConversationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyConversationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useConversationsQuery({
+ * const { data, loading, error } = useMyConversationsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useConversationsQuery(baseOptions?: Apollo.QueryHookOptions<ConversationsQuery, ConversationsQueryVariables>) {
+export function useMyConversationsQuery(baseOptions?: Apollo.QueryHookOptions<MyConversationsQuery, MyConversationsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ConversationsQuery, ConversationsQueryVariables>(ConversationsDocument, options);
+        return Apollo.useQuery<MyConversationsQuery, MyConversationsQueryVariables>(MyConversationsDocument, options);
       }
-export function useConversationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ConversationsQuery, ConversationsQueryVariables>) {
+export function useMyConversationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyConversationsQuery, MyConversationsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ConversationsQuery, ConversationsQueryVariables>(ConversationsDocument, options);
+          return Apollo.useLazyQuery<MyConversationsQuery, MyConversationsQueryVariables>(MyConversationsDocument, options);
         }
-export type ConversationsQueryHookResult = ReturnType<typeof useConversationsQuery>;
-export type ConversationsLazyQueryHookResult = ReturnType<typeof useConversationsLazyQuery>;
-export type ConversationsQueryResult = Apollo.QueryResult<ConversationsQuery, ConversationsQueryVariables>;
-export const MessagesDocument = gql`
-    query Messages($where: MessageWhereInput, $orderBy: [MessageOrderByWithRelationInput!]) {
-  messages(where: $where, take: 10, orderBy: $orderBy) {
-    id
-    content
-    author {
-      id
-      name
-      images {
-        path
-      }
-    }
-    createdAt
+export type MyConversationsQueryHookResult = ReturnType<typeof useMyConversationsQuery>;
+export type MyConversationsLazyQueryHookResult = ReturnType<typeof useMyConversationsLazyQuery>;
+export type MyConversationsQueryResult = Apollo.QueryResult<MyConversationsQuery, MyConversationsQueryVariables>;
+export const MarkAsReadDocument = gql`
+    mutation markAsRead($messageIds: [String!]!) {
+  markAsRead(messageIds: $messageIds) {
+    count
   }
 }
     `;
+export type MarkAsReadMutationFn = Apollo.MutationFunction<MarkAsReadMutation, MarkAsReadMutationVariables>;
+
+/**
+ * __useMarkAsReadMutation__
+ *
+ * To run a mutation, you first call `useMarkAsReadMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMarkAsReadMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [markAsReadMutation, { data, loading, error }] = useMarkAsReadMutation({
+ *   variables: {
+ *      messageIds: // value for 'messageIds'
+ *   },
+ * });
+ */
+export function useMarkAsReadMutation(baseOptions?: Apollo.MutationHookOptions<MarkAsReadMutation, MarkAsReadMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MarkAsReadMutation, MarkAsReadMutationVariables>(MarkAsReadDocument, options);
+      }
+export type MarkAsReadMutationHookResult = ReturnType<typeof useMarkAsReadMutation>;
+export type MarkAsReadMutationResult = Apollo.MutationResult<MarkAsReadMutation>;
+export type MarkAsReadMutationOptions = Apollo.BaseMutationOptions<MarkAsReadMutation, MarkAsReadMutationVariables>;
+export const SendMessageDocument = gql`
+    mutation SendMessage($input: ConversationInput!) {
+  sendMessage(input: $input) {
+    ...MessageParts
+  }
+}
+    ${MessagePartsFragmentDoc}`;
+export type SendMessageMutationFn = Apollo.MutationFunction<SendMessageMutation, SendMessageMutationVariables>;
+
+/**
+ * __useSendMessageMutation__
+ *
+ * To run a mutation, you first call `useSendMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendMessageMutation, { data, loading, error }] = useSendMessageMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSendMessageMutation(baseOptions?: Apollo.MutationHookOptions<SendMessageMutation, SendMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SendMessageMutation, SendMessageMutationVariables>(SendMessageDocument, options);
+      }
+export type SendMessageMutationHookResult = ReturnType<typeof useSendMessageMutation>;
+export type SendMessageMutationResult = Apollo.MutationResult<SendMessageMutation>;
+export type SendMessageMutationOptions = Apollo.BaseMutationOptions<SendMessageMutation, SendMessageMutationVariables>;
+export const MessagesDocument = gql`
+    query Messages($where: MessageWhereInput, $orderBy: [MessageOrderByWithRelationInput!]) {
+  messages(where: $where, take: 10, orderBy: $orderBy) {
+    ...MessageParts
+  }
+}
+    ${MessagePartsFragmentDoc}`;
 
 /**
  * __useMessagesQuery__
@@ -3508,40 +3747,6 @@ export function useMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<M
 export type MessagesQueryHookResult = ReturnType<typeof useMessagesQuery>;
 export type MessagesLazyQueryHookResult = ReturnType<typeof useMessagesLazyQuery>;
 export type MessagesQueryResult = Apollo.QueryResult<MessagesQuery, MessagesQueryVariables>;
-export const MeIdDocument = gql`
-    query MeId {
-  me {
-    id
-  }
-}
-    `;
-
-/**
- * __useMeIdQuery__
- *
- * To run a query within a React component, call `useMeIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useMeIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMeIdQuery({
- *   variables: {
- *   },
- * });
- */
-export function useMeIdQuery(baseOptions?: Apollo.QueryHookOptions<MeIdQuery, MeIdQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MeIdQuery, MeIdQueryVariables>(MeIdDocument, options);
-      }
-export function useMeIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeIdQuery, MeIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MeIdQuery, MeIdQueryVariables>(MeIdDocument, options);
-        }
-export type MeIdQueryHookResult = ReturnType<typeof useMeIdQuery>;
-export type MeIdLazyQueryHookResult = ReturnType<typeof useMeIdLazyQuery>;
-export type MeIdQueryResult = Apollo.QueryResult<MeIdQuery, MeIdQueryVariables>;
 export const MeDocument = gql`
     query me {
   me {

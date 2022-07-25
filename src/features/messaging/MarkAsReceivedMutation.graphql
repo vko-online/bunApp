@@ -1,0 +1,5 @@
+mutation markAsReceived ($messageIds: [String!]!) {
+  markAsReceived (messageIds: $messageIds) {
+    count
+  }
+}

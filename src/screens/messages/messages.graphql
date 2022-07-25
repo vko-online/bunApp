@@ -3,23 +3,6 @@ query Messages (
   $orderBy: [MessageOrderByWithRelationInput!]
 ) {
   messages(where: $where, take:10, orderBy:$orderBy) {
-    id
-    content
-    author {
-      id
-      name
-      images {
-        path
-      }
-    }
-    createdAt
+    ...MessageParts
   }
 }
-
-query MeId {
-  me {
-    id
-  }
-}
-
-

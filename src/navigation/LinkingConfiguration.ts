@@ -20,11 +20,7 @@ const linking: LinkingOptions<RootStackParamList> = {
               ConversationsScreen: 'Conversations'
             }
           },
-          Discover: {
-            screens: {
-              DiscoverScreen: 'Discover'
-            }
-          },
+          DiscoverTab: 'DiscoverTab',
           Profile: {
             screens: {
               ProfileScreen: 'Profile'
@@ -32,6 +28,7 @@ const linking: LinkingOptions<RootStackParamList> = {
           }
         }
       },
+      Messages: 'Messages',
       Modal: 'modal',
       FilterModal: 'filter',
       SettingsModal: 'settings',

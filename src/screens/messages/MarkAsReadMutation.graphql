@@ -1,0 +1,5 @@
+mutation markAsRead ($messageIds: [String!]!) {
+  markAsRead (messageIds: $messageIds) {
+    count
+  }
+}

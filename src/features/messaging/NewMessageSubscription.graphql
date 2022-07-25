@@ -1,0 +1,9 @@
+subscription newMessage ($currentUserId: String!) {
+  newMessage (currentUserId: $currentUserId) {
+    targetId
+    conversationId
+    message {
+      ...MessageParts
+    }
+  }
+}

@@ -4,15 +4,16 @@ import { Button } from 'react-native-paper'
 
 import { persistor } from 'src/store'
 import { Text, View } from 'src/components/Themed'
-import { CommonActions, useNavigation } from '@react-navigation/native'
+import { RootStackScreenProps } from 'src/types'
+import { client } from 'src/services/client'
 
-export default function ModalScreen (): JSX.Element {
-  const navigation = useNavigation()
+export default function SettingsModal ({ navigation }: RootStackScreenProps<'SettingsModal'>): JSX.Element {
   async function handleLogout (): Promise<void> {
     await persistor.purge()
+    await client.resetStore()
     // const resetAction = StackActions.popToTop()
     // most likely this is not correct approach to redirect
-    navigation.dispatch(CommonActions.navigate('Auth'))
+    navigation.popToTop()
   }
   return (
     <View style={styles.container}>
