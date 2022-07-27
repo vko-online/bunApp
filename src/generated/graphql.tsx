@@ -495,6 +495,7 @@ export enum Decision {
 
 export type DiscoverInput = {
   from?: InputMaybe<Scalars['Float']>;
+  online?: InputMaybe<Scalars['Boolean']>;
   to?: InputMaybe<Scalars['Float']>;
 };
 
@@ -3447,6 +3448,8 @@ export type NewMessageSubscription = { __typename?: 'Subscription', newMessage: 
 
 export type MessagePartsFragment = { __typename?: 'Message', id: string, content: string, createdAt: any, readByIds: Array<string>, receivedByIds: Array<string>, author: { __typename?: 'User', id: string, name?: string | null } };
 
+export type ProfilePartsFragment = { __typename?: 'User', id: string, dob?: any | null, name?: string | null, bio?: string | null, latitude?: number | null, longitude?: number | null, images: Array<{ __typename?: 'File', path: string }> };
+
 export type SignInMutationVariables = Exact<{
   input: AuthInput;
 }>;
@@ -3458,6 +3461,20 @@ export type MyConversationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MyConversationsQuery = { __typename?: 'Query', myConversations: Array<{ __typename?: 'Conversation', id: string, lastMessageContent?: string | null, lastMessageAuthor?: string | null, lastMessageDate?: any | null, members: Array<{ __typename?: 'User', id: string, name?: string | null }> }> };
+
+export type DiscoverQueryVariables = Exact<{
+  input: DiscoverInput;
+}>;
+
+
+export type DiscoverQuery = { __typename?: 'Query', discover: Array<{ __typename?: 'User', id: string, dob?: any | null, name?: string | null, bio?: string | null, latitude?: number | null, longitude?: number | null, images: Array<{ __typename?: 'File', path: string }> }> };
+
+export type InteractorsQueryVariables = Exact<{
+  userId: Scalars['String'];
+}>;
+
+
+export type InteractorsQuery = { __typename?: 'Query', interactions: Array<{ __typename?: 'Interaction', id: string, createdAt: any, author: { __typename?: 'User', id: string, name?: string | null } }> };
 
 export type MarkAsReadMutationVariables = Exact<{
   messageIds: Array<Scalars['String']> | Scalars['String'];
@@ -3497,6 +3514,19 @@ export const MessagePartsFragmentDoc = gql`
   createdAt
   readByIds
   receivedByIds
+}
+    `;
+export const ProfilePartsFragmentDoc = gql`
+    fragment ProfileParts on User {
+  id
+  dob
+  name
+  bio
+  latitude
+  longitude
+  images {
+    path
+  }
 }
     `;
 export const MarkAsReceivedDocument = gql`
@@ -3645,6 +3675,84 @@ export function useMyConversationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type MyConversationsQueryHookResult = ReturnType<typeof useMyConversationsQuery>;
 export type MyConversationsLazyQueryHookResult = ReturnType<typeof useMyConversationsLazyQuery>;
 export type MyConversationsQueryResult = Apollo.QueryResult<MyConversationsQuery, MyConversationsQueryVariables>;
+export const DiscoverDocument = gql`
+    query Discover($input: DiscoverInput!) {
+  discover(input: $input) {
+    ...ProfileParts
+  }
+}
+    ${ProfilePartsFragmentDoc}`;
+
+/**
+ * __useDiscoverQuery__
+ *
+ * To run a query within a React component, call `useDiscoverQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscoverQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDiscoverQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDiscoverQuery(baseOptions: Apollo.QueryHookOptions<DiscoverQuery, DiscoverQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DiscoverQuery, DiscoverQueryVariables>(DiscoverDocument, options);
+      }
+export function useDiscoverLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DiscoverQuery, DiscoverQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DiscoverQuery, DiscoverQueryVariables>(DiscoverDocument, options);
+        }
+export type DiscoverQueryHookResult = ReturnType<typeof useDiscoverQuery>;
+export type DiscoverLazyQueryHookResult = ReturnType<typeof useDiscoverLazyQuery>;
+export type DiscoverQueryResult = Apollo.QueryResult<DiscoverQuery, DiscoverQueryVariables>;
+export const InteractorsDocument = gql`
+    query Interactors($userId: String!) {
+  interactions(
+    where: {targetId: {equals: $userId}, decision: {equals: LIKE}, matched: {equals: false}}
+    orderBy: {createdAt: desc}
+  ) {
+    id
+    createdAt
+    author {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useInteractorsQuery__
+ *
+ * To run a query within a React component, call `useInteractorsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useInteractorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useInteractorsQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useInteractorsQuery(baseOptions: Apollo.QueryHookOptions<InteractorsQuery, InteractorsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<InteractorsQuery, InteractorsQueryVariables>(InteractorsDocument, options);
+      }
+export function useInteractorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InteractorsQuery, InteractorsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<InteractorsQuery, InteractorsQueryVariables>(InteractorsDocument, options);
+        }
+export type InteractorsQueryHookResult = ReturnType<typeof useInteractorsQuery>;
+export type InteractorsLazyQueryHookResult = ReturnType<typeof useInteractorsLazyQuery>;
+export type InteractorsQueryResult = Apollo.QueryResult<InteractorsQuery, InteractorsQueryVariables>;
 export const MarkAsReadDocument = gql`
     mutation markAsRead($messageIds: [String!]!) {
   markAsRead(messageIds: $messageIds) {

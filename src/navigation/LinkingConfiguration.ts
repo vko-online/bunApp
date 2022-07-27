@@ -29,6 +29,10 @@ const linking: LinkingOptions<RootStackParamList> = {
         }
       },
       Messages: 'Messages',
+      Interactors: {
+        exact: true,
+        path: 'interactors/:id'
+      },
       Modal: 'modal',
       FilterModal: 'filter',
       SettingsModal: 'settings',

@@ -4,7 +4,7 @@ import { View } from 'src/components/Themed'
 import { Caption, List, Avatar } from 'react-native-paper'
 import { useMyConversationsQuery } from 'src/generated/graphql'
 import Helmet from 'src/components/Helmet'
-import { formatDistance } from 'date-fns'
+import { formatDistanceToNow } from 'date-fns'
 import { RootTabScreenProps } from 'src/types'
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/store'
@@ -27,7 +27,7 @@ export default function Conversations ({
             return (
               <List.Item
                 left={() => <Avatar.Text label={other.name?.slice(0, 1) ?? other.id.slice(0, 1)} />} title={other.name} description={item.lastMessageContent}
-                right={() => <Caption>{formatDistance(new Date(item.lastMessageDate), new Date())}</Caption>}
+                right={() => <Caption>{formatDistanceToNow(new Date(item.lastMessageDate))}</Caption>}
                 onPress={() => navigation.navigate('Messages', { conversationId: item.id, title: other.name })}
               />
             )

@@ -34,13 +34,13 @@ export default function Messages ({
     },
     onCompleted (data) {
       // should check before update to avoid duplicate requests
-      const ids = data.messages.filter(v => v.readByIds.includes(userId as string) === false).map(v => v.id)
+      const ids = data.messages.filter(v => !v.readByIds.includes(userId as string)).map(v => v.id)
       if (ids.length > 0) {
         markAsRead({
           variables: {
             messageIds: ids
           }
-        })
+        }).catch(console.warn)
       }
     }
   })

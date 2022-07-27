@@ -16,6 +16,7 @@ import SettingsModal from 'src/screens/modals/settings'
 import NotFoundScreen from 'src/screens/NotFoundScreen'
 import AuthScreen from 'src/screens/auth'
 import OnboardingScreen from 'src/screens/onboarding'
+import InteractorsScreen from 'src/screens/interactors'
 import ConversationsScreen from 'src/screens/conversations'
 import MessagesScreen from 'src/screens/messages'
 import DiscoverScreen from 'src/screens/discover'
@@ -23,7 +24,6 @@ import OverviewScreen from 'src/screens/overview'
 import ProfileScreen from 'src/screens/profile'
 import {
   RootStackParamList,
-  DiscoverStackParamList,
   RootStackScreenProps,
   RootTabParamList,
   RootTabScreenProps
@@ -49,14 +49,6 @@ export default function Navigation ({
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
-const DiscoverStack = createNativeStackNavigator<DiscoverStackParamList>()
-
-const DiscoverNavigator = (): JSX.Element => (
-  <DiscoverStack.Navigator initialRouteName='Discover' screenOptions={{ headerShown: false }}>
-    <DiscoverStack.Screen name='Discover' component={DiscoverScreen} />
-    <DiscoverStack.Screen name='Overview' component={OverviewScreen} />
-  </DiscoverStack.Navigator>
-)
 
 function RootNavigator (): JSX.Element | null {
   const colorScheme = useColorScheme()
@@ -93,6 +85,14 @@ function RootNavigator (): JSX.Element | null {
       <Stack.Screen
         name='Onboarding'
         component={OnboardingScreen}
+      />
+      <Stack.Screen
+        name='Interactors'
+        component={InteractorsScreen}
+      />
+      <Stack.Screen
+        name='Overview'
+        component={OverviewScreen}
       />
       <Stack.Screen
         name='NotFound'
@@ -179,27 +179,29 @@ function BottomTabNavigator (): JSX.Element {
               name={focused ? 'ios-chatbox' : 'ios-chatbox-outline'}
               color={color}
             />
+          ),
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('Interactors')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+                flexDirection: 'row',
+                alignItems: 'flex-start'
+              })}
+            >
+              <Ionicons
+                name='ios-heart-outline'
+                size={25}
+                color={Colors[colorScheme].text}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
           )
-          // headerRight: () => (
-          //   <Pressable
-          //     onPress={() => navigation.navigate('Modal')}
-          //     style={({ pressed }) => ({
-          //       opacity: pressed ? 0.5 : 1
-          //     })}
-          //   >
-          //     <FontAwesome
-          //       name='info'
-          //       size={25}
-          //       color={Colors[colorScheme].text}
-          //       style={{ marginRight: 15 }}
-          //     />
-          //   </Pressable>
-          // )
         })}
       />
       <BottomTab.Screen
         name='DiscoverTab'
-        component={DiscoverNavigator}
+        component={DiscoverScreen}
         options={({ navigation }: RootTabScreenProps<'DiscoverTab'>) => ({
           title: 'Discover',
           headerShown: true,

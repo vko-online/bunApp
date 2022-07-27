@@ -1,32 +1,32 @@
-import { StyleSheet } from 'react-native'
-import { View } from 'src/components/Themed'
+import { FlatList, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
+import { useAppSelector } from 'src/store'
+import { useDiscoverQuery } from 'src/generated/graphql'
+import Helmet from 'src/components/Helmet'
+import React from 'react'
+import ProfileCard from 'src/components/ProfileCard'
 
-export default function DiscoverScreen (): JSX.Element {
+function DiscoverScreen (): JSX.Element {
+  const filter = useAppSelector(state => state.filter)
+  const { data, loading, error } = useDiscoverQuery({
+    variables: {
+      input: {
+        from: filter.fromAge,
+        to: filter.toAge,
+        online: filter.online
+      }
+    }
+  })
+
   return (
-    <View style={s.container}>
-      {/* <FlatList
-        data={response?.data ?? []}
-        style={s.list}
+    <Helmet loading={loading} error={error}>
+      <FlatList
+        data={data?.discover ?? []}
         keyExtractor={(item, idx) => `${idx}`}
         renderItem={({ item }) => <ProfileCard data={item} />}
-      /> */}
-    </View>
+      />
+    </Helmet>
   )
 }
 
-const s = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  list: {
-    paddingTop: 20,
-    paddingBottom: 20
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%'
-  }
-})
+export default connect()(DiscoverScreen)

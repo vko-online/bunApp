@@ -1,0 +1,5 @@
+query Discover($input: DiscoverInput!) {
+  discover(input: $input) {
+    ...ProfileParts
+  }
+}

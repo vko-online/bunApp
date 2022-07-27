@@ -1,0 +1,18 @@
+query Interactors($userId: String!) {
+  interactions(
+    where: {
+      targetId: { equals: $userId }
+      decision: { equals: LIKE }
+      matched: { equals: false }
+    }
+    orderBy: { createdAt: desc }
+  ) {
+    id
+    createdAt
+    author {
+      id
+      name
+    }
+  }
+}
+

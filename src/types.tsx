@@ -27,12 +27,10 @@ export type RootStackParamList = {
   SettingsModal: undefined
   FilterModal: undefined
   NotFound: undefined
-}
-
-// eslint-disable-next-line
-export type DiscoverStackParamList = {
-  Discover: undefined
-  Overview: undefined
+  Interactors: undefined
+  Overview: {
+    id: string
+  }
 }
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList>
@@ -41,7 +39,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList>
 // eslint-disable-next-line
 export type RootTabParamList = {
   Conversations: undefined
-  DiscoverTab: NativeStackScreenProps<DiscoverStackParamList, keyof DiscoverStackParamList>
+  DiscoverTab: undefined
   Profile: undefined
 }
 
