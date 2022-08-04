@@ -3448,7 +3448,7 @@ export type NewMessageSubscription = { __typename?: 'Subscription', newMessage: 
 
 export type MessagePartsFragment = { __typename?: 'Message', id: string, content: string, createdAt: any, readByIds: Array<string>, receivedByIds: Array<string>, author: { __typename?: 'User', id: string, name?: string | null } };
 
-export type ProfilePartsFragment = { __typename?: 'User', id: string, dob?: any | null, name?: string | null, bio?: string | null, latitude?: number | null, longitude?: number | null, images: Array<{ __typename?: 'File', path: string }> };
+export type ProfilePartsFragment = { __typename?: 'User', id: string, dob?: any | null, name?: string | null, latitude?: number | null, longitude?: number | null, bio?: string | null, images: Array<{ __typename?: 'File', path: string }> };
 
 export type SignInMutationVariables = Exact<{
   input: AuthInput;
@@ -3462,12 +3462,41 @@ export type MyConversationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MyConversationsQuery = { __typename?: 'Query', myConversations: Array<{ __typename?: 'Conversation', id: string, lastMessageContent?: string | null, lastMessageAuthor?: string | null, lastMessageDate?: any | null, members: Array<{ __typename?: 'User', id: string, name?: string | null }> }> };
 
+export type InteractMutationVariables = Exact<{
+  input: InteractionInput;
+}>;
+
+
+export type InteractMutation = { __typename?: 'Mutation', interact: { __typename?: 'Interaction', id: string, decision: Decision, matched: boolean } };
+
 export type DiscoverQueryVariables = Exact<{
   input: DiscoverInput;
 }>;
 
 
-export type DiscoverQuery = { __typename?: 'Query', discover: Array<{ __typename?: 'User', id: string, dob?: any | null, name?: string | null, bio?: string | null, latitude?: number | null, longitude?: number | null, images: Array<{ __typename?: 'File', path: string }> }> };
+export type DiscoverQuery = { __typename?: 'Query', discover: Array<{ __typename?: 'User', id: string, dob?: any | null, name?: string | null, latitude?: number | null, longitude?: number | null, bio?: string | null, images: Array<{ __typename?: 'File', path: string }> }> };
+
+export type DeleteImageMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteImageMutation = { __typename?: 'Mutation', deleteOneFile?: { __typename?: 'File', id: string } | null };
+
+export type UpdateProfileMutationVariables = Exact<{
+  where: UserWhereUniqueInput;
+  data: UserUpdateInput;
+}>;
+
+
+export type UpdateProfileMutation = { __typename?: 'Mutation', updateOneUser?: { __typename?: 'User', looking?: Identity | null, identity?: Identity | null, id: string, dob?: any | null, name?: string | null, latitude?: number | null, longitude?: number | null, bio?: string | null, images: Array<{ __typename?: 'File', path: string }> } | null };
+
+export type UploadImageMutationVariables = Exact<{
+  input: Array<Scalars['Upload']> | Scalars['Upload'];
+}>;
+
+
+export type UploadImageMutation = { __typename?: 'Mutation', uploadImage: Array<{ __typename?: 'File', id: string, path: string }> };
 
 export type InteractorsQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -3498,10 +3527,17 @@ export type MessagesQueryVariables = Exact<{
 
 export type MessagesQuery = { __typename?: 'Query', messages: Array<{ __typename?: 'Message', id: string, content: string, createdAt: any, readByIds: Array<string>, receivedByIds: Array<string>, author: { __typename?: 'User', id: string, name?: string | null } }> };
 
+export type ProfileQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type ProfileQuery = { __typename?: 'Query', findFirstUser?: { __typename?: 'User', id: string, dob?: any | null, name?: string | null, latitude?: number | null, longitude?: number | null, bio?: string | null, images: Array<{ __typename?: 'File', path: string }> } | null };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, name?: string | null, phone: string, images: Array<{ __typename?: 'File', path: string }> } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, dob?: any | null, name?: string | null, latitude?: number | null, longitude?: number | null, city: string, country: string, bio?: string | null, looking?: Identity | null, identity?: Identity | null, images: Array<{ __typename?: 'File', id: string, path: string, type: string }> } | null };
 
 export const MessagePartsFragmentDoc = gql`
     fragment MessageParts on Message {
@@ -3521,9 +3557,9 @@ export const ProfilePartsFragmentDoc = gql`
   id
   dob
   name
-  bio
   latitude
   longitude
+  bio
   images {
     path
   }
@@ -3675,6 +3711,41 @@ export function useMyConversationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type MyConversationsQueryHookResult = ReturnType<typeof useMyConversationsQuery>;
 export type MyConversationsLazyQueryHookResult = ReturnType<typeof useMyConversationsLazyQuery>;
 export type MyConversationsQueryResult = Apollo.QueryResult<MyConversationsQuery, MyConversationsQueryVariables>;
+export const InteractDocument = gql`
+    mutation Interact($input: InteractionInput!) {
+  interact(input: $input) {
+    id
+    decision
+    matched
+  }
+}
+    `;
+export type InteractMutationFn = Apollo.MutationFunction<InteractMutation, InteractMutationVariables>;
+
+/**
+ * __useInteractMutation__
+ *
+ * To run a mutation, you first call `useInteractMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInteractMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [interactMutation, { data, loading, error }] = useInteractMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useInteractMutation(baseOptions?: Apollo.MutationHookOptions<InteractMutation, InteractMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InteractMutation, InteractMutationVariables>(InteractDocument, options);
+      }
+export type InteractMutationHookResult = ReturnType<typeof useInteractMutation>;
+export type InteractMutationResult = Apollo.MutationResult<InteractMutation>;
+export type InteractMutationOptions = Apollo.BaseMutationOptions<InteractMutation, InteractMutationVariables>;
 export const DiscoverDocument = gql`
     query Discover($input: DiscoverInput!) {
   discover(input: $input) {
@@ -3710,6 +3781,109 @@ export function useDiscoverLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<D
 export type DiscoverQueryHookResult = ReturnType<typeof useDiscoverQuery>;
 export type DiscoverLazyQueryHookResult = ReturnType<typeof useDiscoverLazyQuery>;
 export type DiscoverQueryResult = Apollo.QueryResult<DiscoverQuery, DiscoverQueryVariables>;
+export const DeleteImageDocument = gql`
+    mutation DeleteImage($id: String!) {
+  deleteOneFile(where: {id: $id}) {
+    id
+  }
+}
+    `;
+export type DeleteImageMutationFn = Apollo.MutationFunction<DeleteImageMutation, DeleteImageMutationVariables>;
+
+/**
+ * __useDeleteImageMutation__
+ *
+ * To run a mutation, you first call `useDeleteImageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteImageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteImageMutation, { data, loading, error }] = useDeleteImageMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteImageMutation(baseOptions?: Apollo.MutationHookOptions<DeleteImageMutation, DeleteImageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteImageMutation, DeleteImageMutationVariables>(DeleteImageDocument, options);
+      }
+export type DeleteImageMutationHookResult = ReturnType<typeof useDeleteImageMutation>;
+export type DeleteImageMutationResult = Apollo.MutationResult<DeleteImageMutation>;
+export type DeleteImageMutationOptions = Apollo.BaseMutationOptions<DeleteImageMutation, DeleteImageMutationVariables>;
+export const UpdateProfileDocument = gql`
+    mutation updateProfile($where: UserWhereUniqueInput!, $data: UserUpdateInput!) {
+  updateOneUser(where: $where, data: $data) {
+    ...ProfileParts
+    looking
+    identity
+  }
+}
+    ${ProfilePartsFragmentDoc}`;
+export type UpdateProfileMutationFn = Apollo.MutationFunction<UpdateProfileMutation, UpdateProfileMutationVariables>;
+
+/**
+ * __useUpdateProfileMutation__
+ *
+ * To run a mutation, you first call `useUpdateProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProfileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProfileMutation, { data, loading, error }] = useUpdateProfileMutation({
+ *   variables: {
+ *      where: // value for 'where'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateProfileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileMutation, UpdateProfileMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateProfileMutation, UpdateProfileMutationVariables>(UpdateProfileDocument, options);
+      }
+export type UpdateProfileMutationHookResult = ReturnType<typeof useUpdateProfileMutation>;
+export type UpdateProfileMutationResult = Apollo.MutationResult<UpdateProfileMutation>;
+export type UpdateProfileMutationOptions = Apollo.BaseMutationOptions<UpdateProfileMutation, UpdateProfileMutationVariables>;
+export const UploadImageDocument = gql`
+    mutation uploadImage($input: [Upload!]!) {
+  uploadImage(input: $input) {
+    id
+    path
+  }
+}
+    `;
+export type UploadImageMutationFn = Apollo.MutationFunction<UploadImageMutation, UploadImageMutationVariables>;
+
+/**
+ * __useUploadImageMutation__
+ *
+ * To run a mutation, you first call `useUploadImageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadImageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadImageMutation, { data, loading, error }] = useUploadImageMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUploadImageMutation(baseOptions?: Apollo.MutationHookOptions<UploadImageMutation, UploadImageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UploadImageMutation, UploadImageMutationVariables>(UploadImageDocument, options);
+      }
+export type UploadImageMutationHookResult = ReturnType<typeof useUploadImageMutation>;
+export type UploadImageMutationResult = Apollo.MutationResult<UploadImageMutation>;
+export type UploadImageMutationOptions = Apollo.BaseMutationOptions<UploadImageMutation, UploadImageMutationVariables>;
 export const InteractorsDocument = gql`
     query Interactors($userId: String!) {
   interactions(
@@ -3855,15 +4029,59 @@ export function useMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<M
 export type MessagesQueryHookResult = ReturnType<typeof useMessagesQuery>;
 export type MessagesLazyQueryHookResult = ReturnType<typeof useMessagesLazyQuery>;
 export type MessagesQueryResult = Apollo.QueryResult<MessagesQuery, MessagesQueryVariables>;
+export const ProfileDocument = gql`
+    query profile($id: String!) {
+  findFirstUser(where: {id: {equals: $id}}) {
+    ...ProfileParts
+  }
+}
+    ${ProfilePartsFragmentDoc}`;
+
+/**
+ * __useProfileQuery__
+ *
+ * To run a query within a React component, call `useProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProfileQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProfileQuery(baseOptions: Apollo.QueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
+      }
+export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
+        }
+export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
+export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
+export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
 export const MeDocument = gql`
     query me {
   me {
     id
+    dob
     name
-    phone
+    latitude
+    longitude
+    city
+    country
+    bio
     images {
+      id
       path
+      type
     }
+    looking
+    identity
   }
 }
     `;

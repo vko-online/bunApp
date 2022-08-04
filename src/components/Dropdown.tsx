@@ -10,7 +10,7 @@ interface Props {
   label: string
   placeholder?: string
   data: Item[]
-  value: string
+  value?: string | null
   onChange: (d: string) => void
 }
 export default function Dropdown ({ value, label, placeholder, data, onChange }: Props): JSX.Element {
@@ -34,7 +34,7 @@ export default function Dropdown ({ value, label, placeholder, data, onChange }:
         <TextInput
           mode='outlined'
           label={label}
-          value={val}
+          value={val ?? ''}
           ref={ref}
           onFocus={openMenu}
           placeholder={placeholder}

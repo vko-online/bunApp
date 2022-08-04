@@ -13,6 +13,10 @@ export function Spacer ({ size = 10 }: Props): JSX.Element {
   return <View style={[styles.spacer, { marginVertical: size }]} />
 }
 
+export function SpacerVertical ({ size = 10 }: Props): JSX.Element {
+  return <View style={[styles.spacerVertical, { marginHorizontal: size }]} />
+}
+
 const styles = StyleSheet.create({
   separator: {
     marginVertical: 30,
@@ -22,5 +26,9 @@ const styles = StyleSheet.create({
   spacer: {
     height: 1,
     width: '100%'
+  },
+  spacerVertical: {
+    width: 1,
+    height: '100%'
   }
 })

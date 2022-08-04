@@ -1,29 +1,44 @@
-import { StyleSheet } from 'react-native'
+import { Decision, useInteractMutation, useProfileQuery } from 'src/generated/graphql'
+import { RootStackParamList } from 'src/types'
+import { RouteProp } from '@react-navigation/native'
+import React from 'react'
+import ProfileCard from 'src/components/ProfileCard'
+import Helmet from 'src/components/Helmet'
+import { View } from 'src/components/Themed'
 
-import { Text, View } from 'src/components/Themed'
+interface Props {
+  route: RouteProp<RootStackParamList, 'Overview'>
+}
+export default function OverviewScreen ({
+  route
+}: Props): JSX.Element {
+  const [like] = useInteractMutation()
+  const { loading, error, data } = useProfileQuery({
+    variables: {
+      id: route.params.id
+    }
+  })
 
-export default function OverviewScreen (): JSX.Element {
+  async function handleLike (id?: string | null): Promise<void> {
+    if (id != null) {
+      await like({
+        variables: {
+          input: {
+            targetId: id,
+            decision: Decision.Like
+          }
+        }
+      })
+    }
+  }
+
+  if (data?.findFirstUser == null) {
+    return <View />
+  }
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>OverviewScreen</Text>
-      <View style={styles.separator} lightColor='#eee' darkColor='rgba(255,255,255,0.1)' />
-    </View>
+    <Helmet loading={loading} error={error}>
+      <ProfileCard shouldOffsetTop onLike={async () => await handleLike(data?.findFirstUser?.id)} data={data?.findFirstUser} />
+    </Helmet>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold'
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%'
-  }
-})

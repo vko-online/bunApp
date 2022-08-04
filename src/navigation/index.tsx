@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createBottomTabNavigator, BottomTabBar } from '@react-navigation/bottom-tabs'
 import {
   NavigationContainer,
   DefaultTheme,
@@ -13,13 +13,14 @@ import useColorScheme from 'src/hooks/useColorScheme'
 import ModalScreen from 'src/screens/ModalScreen'
 import FilterModal from 'src/screens/modals/filter'
 import SettingsModal from 'src/screens/modals/settings'
+import EditScreen from 'src/screens/edit'
 import NotFoundScreen from 'src/screens/NotFoundScreen'
 import AuthScreen from 'src/screens/auth'
 import OnboardingScreen from 'src/screens/onboarding'
 import InteractorsScreen from 'src/screens/interactors'
 import ConversationsScreen from 'src/screens/conversations'
 import MessagesScreen from 'src/screens/messages'
-import DiscoverScreen from 'src/screens/discover'
+import DiscoverScreen from 'src/screens/discover/index'
 import OverviewScreen from 'src/screens/overview'
 import ProfileScreen from 'src/screens/profile'
 import {
@@ -32,6 +33,7 @@ import LinkingConfiguration from './LinkingConfiguration'
 import { RootState } from 'src/store'
 import { useSelector } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
+import { BlurView } from 'expo-blur'
 
 export default function Navigation ({
   colorScheme
@@ -91,7 +93,20 @@ function RootNavigator (): JSX.Element | null {
         component={InteractorsScreen}
       />
       <Stack.Screen
+        name='Edit'
+        component={EditScreen}
+      />
+      <Stack.Screen
         name='Overview'
+        options={({ navigation }) => ({
+          headerBackVisible: true,
+          headerShown: true,
+          headerTransparent: true,
+          title: '',
+          headerStyle: {
+            backgroundColor: 'transparent'
+          }
+        })}
         component={OverviewScreen}
       />
       <Stack.Screen
@@ -160,7 +175,25 @@ function BottomTabNavigator (): JSX.Element {
   return (
     <BottomTab.Navigator
       initialRouteName='DiscoverTab'
+      tabBar={(props) => (
+        <BlurView
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0
+          }}
+          tint='dark'
+          intensity={50}
+        >
+          <BottomTabBar {...props} />
+        </BlurView>
+      )}
       screenOptions={{
+        tabBarStyle: {
+          borderTopColor: '#666666',
+          backgroundColor: 'transparent'
+        },
         headerShown: false,
         lazy: true,
         tabBarShowLabel: false,
@@ -204,7 +237,7 @@ function BottomTabNavigator (): JSX.Element {
         component={DiscoverScreen}
         options={({ navigation }: RootTabScreenProps<'DiscoverTab'>) => ({
           title: 'Discover',
-          headerShown: true,
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               name={focused ? 'ios-grid' : 'ios-grid-outline'}
@@ -232,7 +265,8 @@ function BottomTabNavigator (): JSX.Element {
         name='Profile'
         component={ProfileScreen}
         options={({ navigation }: RootTabScreenProps<'Profile'>) => ({
-          title: 'Profile',
+          headerTransparent: true,
+          title: '',
           headerShown: true,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon

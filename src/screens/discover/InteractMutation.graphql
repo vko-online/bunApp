@@ -1,0 +1,8 @@
+mutation Interact ($input: InteractionInput!) {
+  interact(input: $input) {
+    id
+    decision
+    matched
+  }
+}
+

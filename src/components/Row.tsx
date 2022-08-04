@@ -12,6 +12,7 @@ export default function Row ({ children, style }: Props): JSX.Element {
 
 const s = StyleSheet.create({
   row: {
+    backgroundColor: 'transparent',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'

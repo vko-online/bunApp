@@ -28,7 +28,7 @@ export default function Helmet ({
       </View>
     )
   }
-  return <View>{children}</View>
+  return <View style={s.flex}>{children}</View>
 }
 
 const s = StyleSheet.create({
@@ -36,5 +36,8 @@ const s = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  flex: {
+    flex: 1
   }
 })

@@ -1,10 +1,13 @@
-import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, split } from '@apollo/client'
+import { ApolloClient, ApolloLink, InMemoryCache, split } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { createClient } from 'graphql-ws'
 import { onError } from '@apollo/client/link/error'
 import { store } from 'src/store'
+import { createUploadLink } from 'apollo-upload-client'
+
+const uploadLink = createUploadLink({ uri: 'http://localhost:3000/graphql' })
 
 const wsLink = new GraphQLWsLink(createClient({
   url: 'ws://localhost:3001/graphql',
@@ -40,12 +43,13 @@ const authLink = setContext(async (_, { headers }) => {
   }
 })
 
-const httpLink = new HttpLink({
-  uri: 'http://localhost:3000/graphql',
-  headers: {
-    'Apollo-Require-Preflight': true
-  }
-})
+// const httpLink = new HttpLink({
+//   uri: 'http://localhost:3000/graphql',
+//   headers: {
+//     'Apollo-Require-Preflight': true
+//   }
+// })
+
 const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query)
@@ -55,7 +59,7 @@ const splitLink = split(
     )
   },
   wsLink,
-  authLink.concat(httpLink)
+  authLink.concat(uploadLink)
 )
 
 export const client = new ApolloClient({

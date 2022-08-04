@@ -1,0 +1,8 @@
+mutation updateProfile($where: UserWhereUniqueInput!, $data: UserUpdateInput!) {
+  updateOneUser(where: $where, data: $data) {
+    ...ProfileParts
+    looking
+    identity
+  }
+}
+

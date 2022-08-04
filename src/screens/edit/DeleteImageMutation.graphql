@@ -1,0 +1,5 @@
+mutation DeleteImage($id: String!) {
+  deleteOneFile(where: { id: $id }) {
+    id
+  }
+}

@@ -28,6 +28,7 @@ export type RootStackParamList = {
   FilterModal: undefined
   NotFound: undefined
   Interactors: undefined
+  Edit: undefined
   Overview: {
     id: string
   }

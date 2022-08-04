@@ -2,7 +2,7 @@ query Messages (
   $where: MessageWhereInput,
   $orderBy: [MessageOrderByWithRelationInput!]
 ) {
-  messages(where: $where, take:10, orderBy:$orderBy) {
+  messages(where: $where, take: 10, orderBy: $orderBy) {
     ...MessageParts
   }
 }

@@ -1,0 +1,5 @@
+query profile($id: String!) {
+  findFirstUser(where: { id: { equals: $id } }) {
+    ...ProfileParts
+  }
+}

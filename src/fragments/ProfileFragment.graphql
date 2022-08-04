@@ -2,9 +2,9 @@ fragment ProfileParts on User {
   id
   dob
   name
-  bio
   latitude
   longitude
+  bio
   images {
     path
   }
