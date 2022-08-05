@@ -2,7 +2,7 @@ import { ImageBackground, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { View } from 'src/components/Themed'
 import { ReactNativeFile } from 'apollo-upload-client'
-import { useUploadImageMutation, useDeleteImageMutation, File } from 'src/generated/graphql'
+import { useUploadImageMutation, useDeleteImageMutation, File, MeDocument, MeQuery } from 'src/generated/graphql'
 import Layout from 'src/constants/Layout'
 import { TouchableRipple, IconButton } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
@@ -33,6 +33,7 @@ export default function ImageSelector ({ file, onChange, onDelete, large = false
     if (!result.cancelled) {
       setImage(result.uri)
       const file = new ReactNativeFile({
+        name: `${new Date().getTime().toString()}.${result.type === 'image' ? 'jpg' : 'mp4'}`,
         uri: result.uri,
         // name: new Date().getTime().toString(),
         type: result.type === 'image' ? 'image/jpeg' : 'video/mp4'
@@ -42,6 +43,27 @@ export default function ImageSelector ({ file, onChange, onDelete, large = false
         await uploadImage({
           variables: {
             input: [file]
+          },
+          update: (cache, result) => {
+            const oldMe = cache.readQuery<MeQuery>({
+              query: MeDocument
+            })
+
+            if (oldMe?.me != null && result.data?.uploadImage != null) {
+              cache.writeQuery<MeQuery>({
+                query: MeDocument,
+                data: {
+                  ...oldMe,
+                  me: {
+                    ...oldMe.me,
+                    images: [
+                      ...oldMe.me.images,
+                      ...result.data?.uploadImage
+                    ]
+                  }
+                }
+              })
+            }
           }
         })
       } catch (e) {

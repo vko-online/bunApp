@@ -7,7 +7,12 @@ import { onError } from '@apollo/client/link/error'
 import { store } from 'src/store'
 import { createUploadLink } from 'apollo-upload-client'
 
-const uploadLink = createUploadLink({ uri: 'http://localhost:3000/graphql' })
+const uploadLink = createUploadLink({
+  uri: 'http://localhost:3000/graphql',
+  headers: {
+    'Apollo-Require-Preflight': true
+  }
+})
 
 const wsLink = new GraphQLWsLink(createClient({
   url: 'ws://localhost:3001/graphql',

@@ -1658,6 +1658,7 @@ export type Mutation = {
   createOneInteraction: Interaction;
   createOneMessage: Message;
   createOneUser: User;
+  deleteImage?: Maybe<File>;
   deleteManyConversation: AffectedRowsOutput;
   deleteManyFile: AffectedRowsOutput;
   deleteManyInteraction: AffectedRowsOutput;
@@ -1746,6 +1747,11 @@ export type MutationCreateOneMessageArgs = {
 
 export type MutationCreateOneUserArgs = {
   data: UserCreateInput;
+};
+
+
+export type MutationDeleteImageArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -3448,7 +3454,7 @@ export type NewMessageSubscription = { __typename?: 'Subscription', newMessage: 
 
 export type MessagePartsFragment = { __typename?: 'Message', id: string, content: string, createdAt: any, readByIds: Array<string>, receivedByIds: Array<string>, author: { __typename?: 'User', id: string, name?: string | null } };
 
-export type ProfilePartsFragment = { __typename?: 'User', id: string, dob?: any | null, name?: string | null, latitude?: number | null, longitude?: number | null, bio?: string | null, images: Array<{ __typename?: 'File', path: string }> };
+export type ProfilePartsFragment = { __typename?: 'User', id: string, dob?: any | null, name?: string | null, latitude?: number | null, longitude?: number | null, bio?: string | null, images: Array<{ __typename?: 'File', path: string, type: string, id: string }> };
 
 export type SignInMutationVariables = Exact<{
   input: AuthInput;
@@ -3474,14 +3480,14 @@ export type DiscoverQueryVariables = Exact<{
 }>;
 
 
-export type DiscoverQuery = { __typename?: 'Query', discover: Array<{ __typename?: 'User', id: string, dob?: any | null, name?: string | null, latitude?: number | null, longitude?: number | null, bio?: string | null, images: Array<{ __typename?: 'File', path: string }> }> };
+export type DiscoverQuery = { __typename?: 'Query', discover: Array<{ __typename?: 'User', id: string, dob?: any | null, name?: string | null, latitude?: number | null, longitude?: number | null, bio?: string | null, images: Array<{ __typename?: 'File', path: string, type: string, id: string }> }> };
 
 export type DeleteImageMutationVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type DeleteImageMutation = { __typename?: 'Mutation', deleteOneFile?: { __typename?: 'File', id: string } | null };
+export type DeleteImageMutation = { __typename?: 'Mutation', deleteImage?: { __typename?: 'File', id: string } | null };
 
 export type UpdateProfileMutationVariables = Exact<{
   where: UserWhereUniqueInput;
@@ -3489,14 +3495,14 @@ export type UpdateProfileMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProfileMutation = { __typename?: 'Mutation', updateOneUser?: { __typename?: 'User', looking?: Identity | null, identity?: Identity | null, id: string, dob?: any | null, name?: string | null, latitude?: number | null, longitude?: number | null, bio?: string | null, images: Array<{ __typename?: 'File', path: string }> } | null };
+export type UpdateProfileMutation = { __typename?: 'Mutation', updateOneUser?: { __typename?: 'User', looking?: Identity | null, identity?: Identity | null, id: string, dob?: any | null, name?: string | null, latitude?: number | null, longitude?: number | null, bio?: string | null, images: Array<{ __typename?: 'File', path: string, type: string, id: string }> } | null };
 
 export type UploadImageMutationVariables = Exact<{
   input: Array<Scalars['Upload']> | Scalars['Upload'];
 }>;
 
 
-export type UploadImageMutation = { __typename?: 'Mutation', uploadImage: Array<{ __typename?: 'File', id: string, path: string }> };
+export type UploadImageMutation = { __typename?: 'Mutation', uploadImage: Array<{ __typename?: 'File', id: string, path: string, type: string }> };
 
 export type InteractorsQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -3532,7 +3538,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', findFirstUser?: { __typename?: 'User', id: string, dob?: any | null, name?: string | null, latitude?: number | null, longitude?: number | null, bio?: string | null, images: Array<{ __typename?: 'File', path: string }> } | null };
+export type ProfileQuery = { __typename?: 'Query', findFirstUser?: { __typename?: 'User', id: string, dob?: any | null, name?: string | null, latitude?: number | null, longitude?: number | null, bio?: string | null, images: Array<{ __typename?: 'File', path: string, type: string, id: string }> } | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3562,6 +3568,8 @@ export const ProfilePartsFragmentDoc = gql`
   bio
   images {
     path
+    type
+    id
   }
 }
     `;
@@ -3783,7 +3791,7 @@ export type DiscoverLazyQueryHookResult = ReturnType<typeof useDiscoverLazyQuery
 export type DiscoverQueryResult = Apollo.QueryResult<DiscoverQuery, DiscoverQueryVariables>;
 export const DeleteImageDocument = gql`
     mutation DeleteImage($id: String!) {
-  deleteOneFile(where: {id: $id}) {
+  deleteImage(id: $id) {
     id
   }
 }
@@ -3855,6 +3863,7 @@ export const UploadImageDocument = gql`
   uploadImage(input: $input) {
     id
     path
+    type
   }
 }
     `;

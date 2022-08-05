@@ -4,12 +4,12 @@ import { IconButton, Avatar, Button } from 'react-native-paper'
 import Layout from 'src/constants/Layout'
 import { Text } from 'src/components/Themed'
 import { Ionicons } from '@expo/vector-icons'
-import { ProfilePartsFragment } from 'src/generated/graphql'
+import { MeQuery } from 'src/generated/graphql'
 import { Video, ResizeMode } from 'expo-av'
 
 interface Props {
   shouldOffsetTop?: boolean
-  data?: ProfilePartsFragment | null
+  data?: MeQuery['me'] | null
   onMessage?: () => void
   onLike?: () => void
   onEdit?: () => void
@@ -23,13 +23,14 @@ export default function ProfileCard ({
 }: Props): JSX.Element {
   const height = Layout.window.height
   const width = Layout.window.width
+  const images = data?.images.map(v => ({
+    type: v.type === 'image/jpeg' ? 'photo' : 'video',
+    url: v.path
+  })) ?? []
   return (
     <View style={s.container}>
       <FlatList
-        data={[
-          { type: 'video', url: 'https://picsum.photos/700' },
-          { type: 'photo', url: 'https://picsum.photos/600' }
-        ]}
+        data={images}
         renderItem={({ item }) => {
           if (item.type === 'video') {
             return (
@@ -61,7 +62,7 @@ export default function ProfileCard ({
           { paddingTop: shouldOffsetTop ? Layout.padding * 5 : Layout.padding * 3 }
         ]}
       >
-        <Avatar.Image size={40} source={{ uri: 'https://picsum.photos/100' }} />
+        <Avatar.Image size={40} source={{ uri: images[0].url }} />
         <View style={s.info}>
           <Text style={s.title}>{data?.name}</Text>
           <Text style={s.distance}>{data?.bio?.slice(0, 20)}</Text>
@@ -102,7 +103,7 @@ export default function ProfileCard ({
               <Button
                 onPress={onEdit}
                 mode='contained'
-                color='#fff'
+                color='red'
               >Edit profile
               </Button>
               )}
@@ -114,6 +115,8 @@ export default function ProfileCard ({
 
 const s = StyleSheet.create({
   container: {
+    flex: 1,
+    minHeight: Layout.window.height,
     backgroundColor: '#000'
   },
   icon: {

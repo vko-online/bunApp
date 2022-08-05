@@ -79,20 +79,21 @@ export default function EditScreen ({ navigation }: RootStackScreenProps<'Edit'>
       })
     }
   })
+  console.log('data', data?.me)
 
   return (
     <Helmet loading={loading}>
       <KeyboardAwareScrollView>
         <View style={s.container}>
           <View style={s.images}>
-            <ImageSelector uri={data?.me?.images[0]?.path} large />
+            <ImageSelector file={data?.me?.images[0]} large />
             <View>
-              <ImageSelector />
-              <ImageSelector />
+              <ImageSelector file={data?.me?.images[1]} />
+              <ImageSelector file={data?.me?.images[2]} />
             </View>
-            <ImageSelector />
-            <ImageSelector />
-            <ImageSelector />
+            <ImageSelector file={data?.me?.images[3]} />
+            <ImageSelector file={data?.me?.images[4]} />
+            <ImageSelector file={data?.me?.images[5]} />
           </View>
           <Separator />
           <TextInput

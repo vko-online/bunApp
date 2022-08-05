@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import RangeSlider from 'react-native-range-slider-expo'
+// import RangeSlider from 'react-native-range-slider-expo'
 import { List } from 'react-native-paper'
 
 import { View } from 'src/components/Themed'
@@ -35,7 +35,7 @@ export default function FilterModal (): JSX.Element {
           )}
         />
         <List.Subheader>Age range</List.Subheader>
-        <RangeSlider
+        {/* <RangeSlider
           min={minAge} max={maxAge}
           fromValueOnChange={val => handleChange('fromAge', val)}
           toValueOnChange={val => handleChange('toAge', val)}
@@ -45,7 +45,7 @@ export default function FilterModal (): JSX.Element {
           showValueLabels
           showRangeLabels
           containerStyle={s.slider}
-        />
+        /> */}
       </List.Section>
     </View>
   )
